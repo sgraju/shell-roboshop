@@ -2,6 +2,8 @@
 
 AMI_ID="ami-0220d79f3f480ecf5"
 SG_ID="sg-019646167c2b38fb7" # take the SG ID from your AWS account
+DOMAIN_NAME="sgrdevsecops.fun"
+ZONE_ID="Z0732355102QE6GB8XDYY"
 
 for instance in $@
 do
@@ -10,8 +12,11 @@ do
     # Get Private IP
     if [ $instance != "frontend" ]; then
         IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instances[0].PrivateIpAddress' --output text)
+        RECORD_NAME="$instance.$DOMAIN_NAME" # mongodb.sgrdevsecops.fun
     else
         IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
+        RECORD_NAME="$DOMAIN_NAME" # sgrdevsecops.fun
     fi
         echo "$instance: $IP"
+        echo "$IP:$RECORD_NAME
 done
