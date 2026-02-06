@@ -17,12 +17,14 @@ do
         IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
         RECORD_NAME="$DOMAIN_NAME" # sgrdevsecops.fun
     fi
-        echo "$instance: $IP"
+
+    echo "$instance: $IP"
 
     aws route53 change-resource-record-sets \
    --hosted-zone-id $ZONE_ID \
-   --change-batch '{
-       "Comment": "updating record set",
+   --change-batch '
+   {
+       "Comment": "Updating record set",
        "Changes": [
            {
                "Action": "UPSERT",
