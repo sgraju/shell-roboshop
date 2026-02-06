@@ -5,7 +5,7 @@ SG_ID="sg-019646167c2b38fb7" # take the SG ID from your AWS account
 DOMAIN_NAME="sgrdevsecops.fun"
 ZONE_ID="Z0732355102QE6GB8XDYY"
 
-for instance in $@
+for instance in $@ # mongodb redis mysql
 do
     INSTANCE_ID=$(aws ec2 run-instances --image-id $AMI_ID --instance-type t3.micro --security-group-ids $SG_ID --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$instance}]" --query 'Instances[0].InstanceId' --output text)
 
@@ -21,22 +21,21 @@ do
     echo "$instance: $IP"
 
     aws route53 change-resource-record-sets \
-   --hosted-zone-id $ZONE_ID \
-   --change-batch '
-   {
-       "Comment": "Updating record set",
-       "Changes": [
-           {
-               "Action": "UPSERT",
-               "ResourceRecordSet": {
-                   "Name": "'$RECORD_NAME'",
-                   "Type": "A",
-                   "TTL": 1,
-                   "ResourceRecords": [
-                       { "Value": "'$IP'" }
-                   ]
-               }
-           }
-       ]
-   }'
+    --hosted-zone-id $ZONE_ID \
+    --change-batch '
+    {
+        "Comment": "Updating record set"
+        ,"Changes": [{
+        "Action"              : "UPSERT"
+        ,"ResourceRecordSet"  : {
+            "Name"              : "'$RECORD_NAME'"
+            ,"Type"             : "A"
+            ,"TTL"              : 1
+            ,"ResourceRecords"  : [{
+                "Value"         : "'$IP'"
+            }]
+        }
+        }]
+    }
+    '
 done
