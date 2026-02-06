@@ -1,6 +1,6 @@
 #!/binbash
 
-AMI_ID="ami-09c813fb71547fc4f"
+AMI_ID="ami-0220d79f3f480ecf5"
 SG_ID="sg-019646167c2b38fb7" # take the SG ID from your AWS account
 
 for instance in $@
