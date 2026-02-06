@@ -18,5 +18,5 @@ do
         RECORD_NAME="$DOMAIN_NAME" # sgrdevsecops.fun
     fi
         echo "$instance: $IP"
-        echo "$IP:$RECORD_NAME
+        echo "$IP:$RECORD_NAME"
 done
