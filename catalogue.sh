@@ -44,6 +44,7 @@ if [ $? -ne 0 ]; then
     VALIDATE $? "roboshop user added"
     else
         echo "User already exist ... $R SKIPPING $N" &>>$LOG_FILE
+fi
 
 mkdir -p /app
 
